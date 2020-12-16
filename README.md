@@ -78,7 +78,7 @@ These can be useful for example in the case of an API where the client sends a r
 
 public static class ApiValidationErrors
 {
-    public static ValidationError UrlIsNotValid(string propertyName) => new ValidationError("1001", "Must be a valid URL.", propertyName);
+    public static ValidationError GuidIsNotValid(string propertyName) => new ValidationError("1001", "Must be a valid GUID.", propertyName);
 
     // ... add more
 }
@@ -89,9 +89,9 @@ public class ValidationErrorTestValidator : AbstractValidator<DummyRequest>
 {
     public ValidationErrorTestValidator()
     {
-        RuleFor(r => r.Url)
-            .IsUrl()
-            .WithValidationError(ApiValidationErrors.UrlIsNotValid(nameof(DummyRequest.Url)));
+        RuleFor(r => r.Guid)
+            .IsGuid()
+            .WithValidationError(ApiValidationErrors.GuidIsNotValid(nameof(DummyRequest.Url)));
     }
 }
 ```
