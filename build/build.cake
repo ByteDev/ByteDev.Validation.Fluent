@@ -1,4 +1,5 @@
 #addin "nuget:?package=Cake.Incubator&version=5.1.0"
+#addin "nuget:?package=Cake.Powershell&version=0.4.8"
 #tool "nuget:?package=NUnit.ConsoleRunner&version=3.11.1"
 #tool "nuget:?package=GitVersion.CommandLine&version=5.2.4"
 #load "ByteDev.Utilities.cake"
@@ -7,6 +8,7 @@ var solutionName = "ByteDev.Validation.Fluent";
 var projName = "ByteDev.Validation.Fluent";
 
 var solutionFilePath = "../" + solutionName + ".sln";
+var projFilePath = "../src/" + projName + "/" + projName + ".csproj";
 var nuspecFilePath = projName + ".nuspec";
 
 var nugetSources = new[] {"https://api.nuget.org/v3/index.json"};
@@ -21,7 +23,19 @@ var configuration = GetBuildConfiguration();
 Information("Configurtion: " + configuration);
 
 
+Task("CheckNuspec")
+	.Description("Check nuspec file is valid")
+	.Does(() =>
+	{
+		StartPowershellFile("./nuspec-check.ps1", args =>
+        {
+            args.Append(projFilePath)
+				.Append(nuspecFilePath);
+        });
+	});
+
 Task("Clean")
+	.IsDependentOn("CheckNuspec")
     .Does(() =>
 	{
 		CleanDirectory(artifactsDirectory);
