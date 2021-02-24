@@ -91,7 +91,7 @@ public class ValidationErrorTestValidator : AbstractValidator<DummyRequest>
     {
         RuleFor(r => r.Guid)
             .IsGuid()
-            .WithValidationError(ApiValidationErrors.GuidIsNotValid(nameof(DummyRequest.Url)));
+            .WithValidationError(ApiValidationErrors.GuidIsNotValid(nameof(DummyRequest.Guid)));
     }
 }
 ```
