@@ -38,17 +38,17 @@ function WriteHeader()
     Write-Output "Project file: $projFile"
     Write-Output "Nuspec file: $nuspecFile"
     Write-Output ""
-    Write-Output "Checking (project) PackageReferences exist as (nuspec) dependencies..."
+    Write-Output "Checking project PackageReferences exist in .nuspec file..."
     Write-Output ""    
 }
 
-function WriteStatus($foundStatus)
+function WriteStatus($foundStatus, $packageName, $packageVersion)
 {
     switch ($foundStatus)
     {
-        # 0 { Write-Output "$projName $projVersion - found" }
-        1 { Write-Error "$projName $projVersion - wrong version!" }
-        2 { Write-Error "$projName $projVersion - not found!" }
+        0 { Write-Output "$packageName $packageVersion - found" }
+        1 { Write-Error "$packageName $packageVersion - wrong version!" }
+        2 { Write-Error "$packageName $packageVersion - not found!" }
     }
 }
 
@@ -94,9 +94,8 @@ $projXml.SelectNodes("//PackageReference") | foreach {
         $errorCount++
     }
 
-    WriteStatus $foundStatus
+    WriteStatus $foundStatus $projName $projVersion
 } 
 
 Write-Output ""
 Write-Output "$errorCount errors."
-
