@@ -1,7 +1,7 @@
-#addin "nuget:?package=Cake.Incubator&version=5.1.0"
+#addin "nuget:?package=Cake.Incubator&version=6.0.0"
 #addin "nuget:?package=Cake.Powershell&version=0.4.8"
-#tool "nuget:?package=NUnit.ConsoleRunner&version=3.11.1"
-#tool "nuget:?package=GitVersion.CommandLine&version=5.2.4"
+#tool "nuget:?package=NUnit.ConsoleRunner&version=3.12.0"
+#tool "nuget:?package=GitVersion.CommandLine&version=5.6.8"
 #load "ByteDev.Utilities.cake"
 
 var solutionName = "ByteDev.Validation.Fluent";
