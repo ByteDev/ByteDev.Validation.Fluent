@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using FluentValidation;
 using NUnit.Framework;
 
@@ -271,6 +270,51 @@ namespace ByteDev.Validation.Fluent.UnitTests
                 Assert.That(result.IsValid, Is.True);
             }
         }
+
+        [TestFixture]
+        public class IsDateTime : RuleBuilderExtensionsTests
+        {
+            [TestCase(null)]
+            [TestCase("")]
+            [TestCase("2000-01-01 12:00:00")]
+            [TestCase("2000-01-01T24:00:00")]
+            public void WhenIsNotInFormat_ThenReturnInvalid(string value)
+            {
+                _request.DateTime = value;
+
+                var result = _sut.Validate(_request);
+
+                Assert.That(result.IsValid, Is.False);
+                Assert.That(result.Errors.Single().ErrorMessage, Is.EqualTo("Date Time must be a valid date time in format: yyyy-MM-ddThh:mm:ss."));
+            }
+        }
+
+        [TestFixture]
+        public class IsDateTimeOrEmpty : RuleBuilderExtensionsTests
+        {
+            [TestCase(null)]
+            [TestCase("")]
+            public void WhenIsNullOrEmpty_ThenReturnValid(string value)
+            {
+                _request.DateTimeOrEmpty = value;
+
+                var result = _sut.Validate(_request);
+
+                Assert.That(result.IsValid, Is.True);
+            }
+            
+            [TestCase("2000-01-01 12:00:00")]
+            [TestCase("2000-01-01T24:00:00")]
+            public void WhenIsNotInFormat_ThenReturnInvalid(string value)
+            {
+                _request.DateTimeOrEmpty = value;
+
+                var result = _sut.Validate(_request);
+
+                Assert.That(result.IsValid, Is.False);
+                Assert.That(result.Errors.Single().ErrorMessage, Is.EqualTo("Date Time Or Empty must be a valid date time in format: yyyy-MM-ddThh:mm:ss."));
+            }
+        }
     }
 
     public class DummyRequest
@@ -297,21 +341,27 @@ namespace ByteDev.Validation.Fluent.UnitTests
         
         public string InIgnoreCase { get; set; }
 
+        public string DateTime { get; set; }
+
+        public string DateTimeOrEmpty { get; set; }
+
         public static DummyRequest CreateValid()
         {
             return new DummyRequest
             {
                 Guid = System.Guid.NewGuid().ToString(),
                 GuidWithOverriddenMessage = System.Guid.NewGuid().ToString(),
-                GuidOrEmpty = null,
+                GuidOrEmpty = System.Guid.NewGuid().ToString(),
                 Url = "http://localhost/",
                 UrlOrEmpty = "http://localhost/",
                 EmailAddress = "someone@somewhere.com",
-                EmailAddressOrEmpty = null,
+                EmailAddressOrEmpty = "someone@somewhere.com",
                 Digits = "0123",
-                DigitsOrEmpty = null,
+                DigitsOrEmpty = "0123",
                 In = null,
-                InIgnoreCase = null
+                InIgnoreCase = null,
+                DateTime = "2000-01-01T12:00:00",
+                DateTimeOrEmpty = "2000-01-01T12:00:00"
             };
         }
     }
@@ -353,6 +403,12 @@ namespace ByteDev.Validation.Fluent.UnitTests
 
             RuleFor(r => r.InIgnoreCase)
                 .IsIn(new[] {"A", "B", "C", "", null}, StringComparer.InvariantCultureIgnoreCase);
+
+            RuleFor(r => r.DateTime)
+                .IsDateTime("yyyy-MM-ddThh:mm:ss");
+
+            RuleFor(r => r.DateTimeOrEmpty)
+                .IsDateTimeOrEmpty("yyyy-MM-ddThh:mm:ss");
         }
     }
 }

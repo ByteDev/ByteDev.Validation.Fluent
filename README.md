@@ -27,6 +27,8 @@ Full details of the release notes can be viewed on [GitHub](https://github.com/B
 ### Method extensions
 
 IRuleBuilder<T, string>:
+- IsDateTime
+- IsDateTimeOrEmpty
 - IsDigits
 - IsDigitsOrEmpty
 - IsEmailAddress

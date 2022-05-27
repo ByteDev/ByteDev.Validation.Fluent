@@ -31,13 +31,7 @@ namespace ByteDev.Validation.Fluent
         public static IRuleBuilderOptions<T, string> IsGuidOrEmpty<T>(this IRuleBuilder<T, string> source)
         {
             return source
-                .Must(s =>
-                {
-                    if (string.IsNullOrEmpty(s))
-                        return true;
-
-                    return s.IsGuid();
-                })
+                .Must(s => string.IsNullOrEmpty(s) || s.IsGuid())
                 .WithMessage("{PropertyName} must be a valid GUID.");
         }
 
@@ -65,13 +59,7 @@ namespace ByteDev.Validation.Fluent
         public static IRuleBuilderOptions<T, string> IsUrlOrEmpty<T>(this IRuleBuilder<T, string> source)
         {
             return source
-                .Must(s =>
-                {
-                    if (string.IsNullOrEmpty(s))
-                        return true;
-
-                    return s.IsHttpUrl();
-                })
+                .Must(s => string.IsNullOrEmpty(s) || s.IsHttpUrl())
                 .WithMessage("{PropertyName} must be a valid HTTP URL or not set.");
         }
 
@@ -99,13 +87,7 @@ namespace ByteDev.Validation.Fluent
         public static IRuleBuilderOptions<T, string> IsEmailAddressOrEmpty<T>(this IRuleBuilder<T, string> source)
         {
             return source
-                .Must(s =>
-                {
-                    if (string.IsNullOrEmpty(s))
-                        return true;
-                    
-                    return s.IsEmailAddress();
-                })
+                .Must(s => string.IsNullOrEmpty(s) || s.IsEmailAddress())
                 .WithMessage("{PropertyName} must be a valid email address or not set.");
         }
 
@@ -133,13 +115,7 @@ namespace ByteDev.Validation.Fluent
         public static IRuleBuilderOptions<T, string> IsDigitsOrEmpty<T>(this IRuleBuilder<T, string> source)
         {
             return source
-                .Must(s =>
-                {
-                    if (string.IsNullOrEmpty(s))
-                        return true;
-                    
-                    return s.IsDigits();
-                })
+                .Must(s => string.IsNullOrEmpty(s) || s.IsDigits())
                 .WithMessage("{PropertyName} must contain only digits or not set.");
         }
 
@@ -172,6 +148,36 @@ namespace ByteDev.Validation.Fluent
             return source
                 .Must(s => validItems.Contains(s, comparer))
                 .WithMessage("{PropertyName} must contain one of the defined set of values.");
+        }
+
+        /// <summary>
+        /// Defines a validator on the current rule builder that checks whether the provided string is 
+        /// in a particular Date Time format.
+        /// </summary>
+        /// <typeparam name="T">Type of the object being validated.</typeparam>
+        /// <param name="source">Rule builder on which the validator will be defined.</param>
+        /// <param name="format">A format specifier that defines the required format of the string.</param>
+        /// <returns></returns>
+        public static IRuleBuilderOptions<T, string> IsDateTime<T>(this IRuleBuilder<T, string> source, string format)
+        {
+            return source
+                .Must(s => s.IsDateTime(format))
+                .WithMessage($"{{PropertyName}} must be a valid date time in format: {format}.");
+        }
+
+        /// <summary>
+        /// Defines a validator on the current rule builder that checks whether the provided string is 
+        /// in a particular Date Time format or is null or empty.
+        /// </summary>
+        /// <typeparam name="T">Type of the object being validated.</typeparam>
+        /// <param name="source">Rule builder on which the validator will be defined.</param>
+        /// <param name="format">A format specifier that defines the required format of the string.</param>
+        /// <returns></returns>
+        public static IRuleBuilderOptions<T, string> IsDateTimeOrEmpty<T>(this IRuleBuilder<T, string> source, string format)
+        {
+            return source
+                .Must(s => string.IsNullOrEmpty(s) || s.IsDateTime(format))
+                .WithMessage($"{{PropertyName}} must be a valid date time in format: {format}.");
         }
     }
 }
