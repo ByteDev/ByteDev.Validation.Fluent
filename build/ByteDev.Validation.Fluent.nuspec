@@ -15,9 +15,9 @@
     <license type="file">LICENSE</license>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="ByteDev.Strings" version="9.3.0" />
+        <dependency id="ByteDev.Strings" version="10.0.0" />
         <dependency id="FluentValidation" version="8.6.2" />
-        <dependency id="System.Text.Json" version="4.7.2" />
+        <dependency id="System.Text.Json" version="5.0.2" />
       </group>
     </dependencies>
   </metadata>

@@ -1,5 +1,17 @@
 # Release Notes
 
+## 1.1.1 - 14 June 2022
+
+Breaking changes:
+- (None)
+
+New features:
+- (None)
+
+Bug fixes / internal changes:
+- Updated `ByteDev.Strings` package dependency to version `10.0.0`.
+- Updated `System.Text.Json` package dependency to version `5.0.2`.
+
 ## 1.1.0 - 27 May 2022
 
 Breaking changes:
